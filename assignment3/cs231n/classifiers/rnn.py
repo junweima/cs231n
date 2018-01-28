@@ -137,7 +137,12 @@ class CaptioningRNN(object):
         # defined above to store loss and gradients; grads[k] should give the      #
         # gradients for self.params[k].                                            #
         ############################################################################
-        pass
+        # pass
+
+        # step 1: affine transform
+        features_trans = features * W_proj + b_proj
+        
+
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
