@@ -3,6 +3,7 @@ Minimal character-level Vanilla RNN model. Written by Andrej Karpathy (@karpathy
 BSD License
 """
 import numpy as np
+import pdb
 
 # data I/O
 data = open('input.txt', 'r').read() # should be simple plain text file
@@ -41,6 +42,7 @@ def lossFun(inputs, targets, hprev):
     ys[t] = np.dot(Why, hs[t]) + by # unnormalized log probabilities for next chars
     ps[t] = np.exp(ys[t]) / np.sum(np.exp(ys[t])) # probabilities for next chars
     loss += -np.log(ps[t][targets[t],0]) # softmax (cross-entropy loss)
+    pdb.set_trace()
   # backward pass: compute gradients going backwards
   dWxh, dWhh, dWhy = np.zeros_like(Wxh), np.zeros_like(Whh), np.zeros_like(Why)
   dbh, dby = np.zeros_like(bh), np.zeros_like(by)
