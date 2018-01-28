@@ -122,11 +122,13 @@ def rnn_forward(x, h0, Wx, Wh, b):
     # print(h0.shape)
     # print(T)
     h = []
+    cache = []
 
     for i in range(T):
-        next_h, cache = rnn_step_forward(np.squeeze(x[:,i,:]), inter_h_in, Wx, Wh, b)
+        next_h, cache_i = rnn_step_forward(np.squeeze(x[:,i,:]), inter_h_in, Wx, Wh, b)
         inter_h_in = next_h
         h.append(inter_h_in)
+        cache.append(cache_i)
 
     h = np.swapaxes(np.array(h), 0, 1)
 
@@ -157,7 +159,20 @@ def rnn_backward(dh, cache):
     # sequence of data. You should use the rnn_step_backward function that you   #
     # defined above. You can use a for loop to help compute the backward pass.   #
     ##############################################################################
-    pass
+    
+    # print(len(cache))
+
+    N, T, H = dh.shape
+
+    # print(N, T, H)
+
+    print(dh[i])
+
+
+    for i in range(T):
+        dx, dprev_h, dWx, dWh, db = rnn_step_backward(dh[i], cache[i])
+
+
     ##############################################################################
     #                               END OF YOUR CODE                             #
     ##############################################################################
