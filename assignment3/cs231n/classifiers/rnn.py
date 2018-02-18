@@ -140,41 +140,41 @@ class CaptioningRNN(object):
         # pass
 
         # step 1: affine transform
-        features_trans = np.matmul(features, W_proj) + b_proj
+       #  features_trans = np.matmul(features, W_proj) + b_proj
 
-        # step 2: word embeddings for caption_in
-        V, W = W_embed.shape
-        N, T = caption_in.shape
-        onehot_caption_in = np.zeros((N, T, V))
-        for n, t in zip(range(N), range(T)):
-            onehot_caption_in[n, t, caption_in[n, t]] = 1
+       #  # step 2: word embeddings for caption_in
+       #  V, W = W_embed.shape
+       #  N, T = caption_in.shape
+       #  onehot_caption_in = np.zeros((N, T, V))
+       #  for n, t in zip(range(N), range(T)):
+       #      onehot_caption_in[n, t, caption_in[n, t]] = 1
 
-        embedded_caption_in = np.matmul(onehot_caption_in, W_embed)
+       #  embedded_caption_in = np.matmul(onehot_caption_in, W_embed)
 
-        # step 3: produce hidden vectors
-        _, H = Wx.shape
-        if self.cell_type == 'rnn':
-            hidden_caption_in = np.matmul(embedded_caption_in, Wx) # N, T, H
+       #  # step 3: produce hidden vectors
+       #  _, H = Wx.shape
+       #  if self.cell_type == 'rnn':
+       #      hidden_caption_in = np.matmul(embedded_caption_in, Wx) # N, T, H
         
-            hidden_vector_prev = features_trans # N,H
-            hidden_vectors = np.zeros((T,N,H))
-            for t in range(T):
-                hidden_x = np.squeeze(hidden_caption_in[:,t,:])
-                hidden_h = np.matmul(hidden_vector_prev, Wh)
-                hidden_vector_next = np.tanh(hidden_x + hidden_h + b)
-                hidden_vectors[t] = hidden_vector_next
-                hidden_vector_prev = hidden_vector_next
+       #      hidden_vector_prev = features_trans # N,H
+       #      hidden_vectors = np.zeros((T,N,H))
+       #      for t in range(T):
+       #          hidden_x = np.squeeze(hidden_caption_in[:,t,:])
+       #          hidden_h = np.matmul(hidden_vector_prev, Wh)
+       #          hidden_vector_next = np.tanh(hidden_x + hidden_h + b)
+       #          hidden_vectors[t] = hidden_vector_next
+       #          hidden_vector_prev = hidden_vector_next
 
-        # step 4: inferrence
-        caption_pred = np.matmul(hidden_vectors, W_vocab) + b_vocab # T,N,V
-        caption_pred = caption_pred.transpose(1,0,2)
+       #  # step 4: inferrence
+       #  caption_pred = np.matmul(hidden_vectors, W_vocab) + b_vocab # T,N,V
+       #  caption_pred = caption_pred.transpose(1,0,2)
 
-        # step 5: compute loss
-        onehot_caption_out = np.zeros((N, T, V))
-        for n, t in zip(range(N), range(T)):
-            onehot_caption_out[n, t, caption_out[n, t]] = 1
+       #  # step 5: compute loss
+       #  onehot_caption_out = np.zeros((N, T, V))
+       #  for n, t in zip(range(N), range(T)):
+       #      onehot_caption_out[n, t, caption_out[n, t]] = 1
 
-       loss, dscores = temporal_softmax_loss(caption_pred, captions_out, mask, verbose=False)
+       # loss, dscores = temporal_softmax_loss(caption_pred, captions_out, mask, verbose=False)
 
 
         
